@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+    app:
+        build: ./app/Dockerfile
+        container_name: admin
+        restart: always
+        volumes:
+            - ./app:/app
+        ports:
+            - 3000:3000
+        networks:
+            - admin
+        depends_on:
+            - database
+
+    database:
+        image: mongo:latest
+        container_name: admin-database
+        restart: always
+        environment:
+        MONGO_INITDB_ROOT_USERNAME: root
+        MONGO_INITDB_ROOT_PASSWORD: root
+        MONGO_INITDB_DATABASE: admin
+        ports:
+            - 27017:27017
+        volumes:
+            - ./mongodb-data:/mongodb-data
+        networks:
+            - admin
+        
+networks:
+    admin:
